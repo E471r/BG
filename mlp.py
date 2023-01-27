@@ -33,11 +33,11 @@ class MLP(tf.keras.layers.Layer):
     def call(self, x, drop_rate = 0.0):
         '''
         Inputs:
+            m = batch size (number of input vectors)
+            d = dimensionality of the input vectors
             x : (m,d) shaped tensor. 
-                d, and the (d,dims_hidden[0]) shaped weights of the first hidden layer, become defined after the first call. 
             drop_rate : float in range [0,1]. 
                 Default is 0.0, and always set to zero (from outside) when evaluating. 
-                During training around 0.1 is approximate heuristic.
         Output:
             ys : list of tensors with shapes (m,dims_outputs[i]) for every output layer i.
         '''

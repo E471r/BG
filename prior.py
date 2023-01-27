@@ -3,6 +3,8 @@ import tensorflow as tf
 import tensorflow_probability as tfp
 
 ##
+''' this was not tested successfully yet during training, maybe something is wrong.
+'''
 
 pi = np.pi
 

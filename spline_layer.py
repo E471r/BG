@@ -8,10 +8,10 @@ from spline import rational_quadratic_
 
 class SPLINE_LAYER(tf.keras.layers.Layer):
     def __init__(self,
-                 dim : int,             # # variable being transformed.
+                 dim : int,             # number of marginal variables being transformed.
                  n_bins : int = 32,     # number of knots in spline.
-                 dims_hidden = [100],   # list of ints : # nodes in hidden layers.
-                 joined_MLP = False,    # keep False is ok.
+                 dims_hidden = [100],   # list of ints : number nodes in hidden layers.
+                 joined_MLP = False,    # whether to have MLPs seperate for each type of spline parameter.
                  hidden_activation = tf.nn.silu,
                  flow_range = [-1.0,1.0],
                  eps_bin = 1e-2, # or 2.0/(n_bins*5.0)

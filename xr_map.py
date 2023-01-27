@@ -422,8 +422,8 @@ def try_get_conditioned_reconstriction_sequence_(inds_placed,  # list
         else: pass    
         return None
 
-###
-
+### TODO: sort this out.
+'''
 import networkx as nx
 
 def make_snakes(am, head):
@@ -434,7 +434,6 @@ def make_snakes(am, head):
         result+=paths    
         
     return [x for x in result if len(x)==4]
-
 
 def get_ABCD_v3_(am):
     am = np.array(am)
@@ -463,7 +462,7 @@ def get_ABCD_v3_(am):
         except: break
             
     return che
-
+'''
 ###
 
 class XR_MAP:

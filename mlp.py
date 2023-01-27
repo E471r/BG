@@ -15,9 +15,9 @@ class MLP(tf.keras.layers.Layer):
 
         Inputs:
             dims_outputs : list of ints.
-            outputs_activations : list of functions, or None (default: unconstrained linear outputs).
-            dims_hidden : list of ints. [The length of this list determines how many hidden layers.]
-            hidden_activation : non-linear function. [After each hidden later this non-linearity is applied.]
+            outputs_activations : list of functions, or None (default: linear outputs).
+            dims_hidden : list of ints. The length of this list determines how many hidden layers.
+            hidden_activation : non-linear function. After each hidden later this non-linearity is applied.
 
         '''
 

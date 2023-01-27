@@ -6,7 +6,7 @@ from spline_layer import SPLINE_LAYER
 
 from shift_layer import SHIFT_LAYER_STATIC, SHIFT_LAYER_PARAMETRIC
 
-from prior import MARGINAL_GMM_PRIOR # requires tensorflow_probability to be installed.
+# from prior import MARGINAL_GMM_PRIOR # requires tensorflow_probability to be installed.
 
 from utils_nf import save_pickle_, load_pickle_
 

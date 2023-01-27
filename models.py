@@ -31,25 +31,25 @@ def sum_(x):
     return tf.reduce_sum(x, axis=1, keepdims=True)
     
 pi = np.pi
-def cos_sin_1_(x, nk=1):
+def cos_sin_(x):
     return tf.concat( [tf.cos(x*pi),tf.sin(x*pi)], axis=1 )
 
-
-def cos_sin_2_(x, nk=1):
+'''
+def cos_sin_2_(x):
     return tf.concat( [tf.cos(x*pi),tf.sin(x*pi),
                        tf.cos(x*pi*2.0),tf.sin(x*pi*2.0)], axis=1 )
 
-def cos_sin_3_(x, nk=1):
+def cos_sin_3_(x):
     return tf.concat( [tf.cos(x*pi),tf.sin(x*pi),
                        tf.cos(x*pi*2.0),tf.sin(x*pi*2.0),
                        tf.cos(x*pi*3.0),tf.sin(x*pi*3.0)], axis=1 )
 
-def cos_sin_(x, nk=1):
+def cos_sin_4_(x):
     return tf.concat( [tf.cos(x*pi),tf.sin(x*pi),
                        tf.cos(x*pi*2.0),tf.sin(x*pi*2.0),
                        tf.cos(x*pi*3.0),tf.sin(x*pi*3.0),
                        tf.cos(x*pi*4.0),tf.sin(x*pi*4.0)], axis=1 )
-
+'''
 
 def selective_cos_sin_(x, mask_x):
     x_non_periodic = tf.gather(x, tf.where(mask_x != 1)[:,1], axis=1)

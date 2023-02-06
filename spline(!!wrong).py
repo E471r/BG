@@ -1,12 +1,114 @@
 import tensorflow as tf
+
+import tensorflow_probability as tfp
+RQS_class = tfp.bijectors.RationalQuadraticSpline
+
+def bin_positons_(MLP_output, # (m,dim*n_bins)
+                  dim,
+                  n_bins,
+                  domain_width,
+                  min_bin_width,
+                 ):
+    MLP_output = tf.reshape(MLP_output, [-1, dim, n_bins])
+    c = domain_width - n_bins*min_bin_width
+    bin_positons = tf.nn.softmax(MLP_output, axis=-1) * c + min_bin_width
+    return bin_positons # (m, dim, n_bins)
+
+def knot_slopes_(MLP_output,
+                dim,
+                n_bins,
+                min_knot_slope,
+               ):
+    MLP_output = tf.reshape(MLP_output, [-1, dim, n_bins - 1])
+    knot_slopes = tf.nn.softplus(MLP_output) + min_knot_slope
+    return knot_slopes # (m, dim, n_bins)
+
+def rqs_(x,
+         w,
+         h, 
+         s = None, 
+         forward = True,
+         xy_range = [0.0, 1.0],
+         min_bin_width = 0.1,
+         min_knot_slope = 0.1,
+        ):
+    m, dim = x.shape
+    n_bins = w.shape[1] // dim
+    
+    xy_min, xy_max = xy_range
+    domain_width = xy_max - xy_min
+    
+    if s is None: s = tf.ones([m,dim*(n_bins-1)])
+    else: pass
+    
+    bin_positons_x = bin_positons_(w,
+                                   dim = dim,
+                                   n_bins = n_bins,
+                                   domain_width = domain_width,
+                                   min_bin_width = min_bin_width) # (m, dim, n_bins)
+    bin_positons_y = bin_positons_(h,
+                                   dim = dim,
+                                   n_bins = n_bins,
+                                   domain_width = domain_width,
+                                   min_bin_width = min_knot_slope) # (m, dim, n_bins)
+    knot_slopes = knot_slopes_(s,
+                               dim = dim,
+                               n_bins = n_bins,
+                               min_knot_slope = min_knot_slope)
+    
+    RQS_obj = RQS_class(bin_widths = bin_positons_x,
+                        bin_heights = bin_positons_y,
+                        knot_slopes = knot_slopes,
+                        range_min = xy_min,
+                       )
+    if forward:
+        return RQS_obj.forward(x), RQS_obj.forward_log_det_jacobian(x)
+    else:
+        return RQS_obj.inverse(x), RQS_obj.inverse_log_det_jacobian(x)
+    
+
+def rational_quadratic_(
+    x, # (m,dim)
+    w, # (m,dim,n_bins)
+    h, # (m,dim,n_bins)
+    d, # (m,dim,n_bins+1)
+
+    periodic = False,
+    periodic_mask = None, # (1,dim,1) tensor of 1 where periodic.
+    inverse=False,
+    
+    left=0.0,
+    right=1.0,
+    bottom=0.0,
+    top=1.0,
+    
+    eps_bin = 1e-2,
+    eps_slope = 1e-2
+    ):
+    """ to be sorted out. Reverting back to non-periodic version for now.
+    """
+
+    return rqs_(x=x,
+         w=w,
+         h=h, 
+         s = None, 
+         forward = not inverse,
+         xy_range = [left, right],
+         min_bin_width = eps_bin,
+         min_knot_slope = eps_slope,
+        )
+
+
+''' mistakes:
+
 import warnings
 
 ##
 
 def searchsorted_(sorted_sequence, values):
-    '''
+    """
     ans = torch.sum(values[..., None] >= sorted_sequence, dim=-1) - 1
-    '''
+    """
     bool2int = tf.cast( values[..., None] >= sorted_sequence, dtype=tf.int32 )
     ans = tf.reduce_sum( bool2int, axis=-1 ) - 1
     return ans
@@ -14,16 +116,16 @@ def searchsorted_(sorted_sequence, values):
 def select_bins_(x, idx):
     # idx ~ (batch_dims, input_dim, 1)
     # x ~ (context_batch_dims, input_dim, count_bins)
-    '''
+    """
     idx = idx.clamp(min=0, max=x.size(-1) - 1)
-    '''
+    """
     idx = tf.clip_by_value( idx, 0, x.shape[-1]-1 )
     if len(idx.shape) >= len(x.shape):
-        '''
+        """
         x = x.reshape((1,) * (len(idx.shape) - len(x.shape)) + x.shape)
         x = x.expand(idx.shape[:-2] + (-1,) * 2)
         idx = x.gather(-1, idx).squeeze(-1)
-        '''
+        """
         x = tf.reshape( x, shape = ((1,) * (len(idx.shape) - len(x.shape)) + x.shape) )
         # skipping expand()
         idx = tf.gather_nd( x, idx, batch_dims = len(x.shape)-1 )
@@ -201,3 +303,4 @@ def rational_quadratic_(
         ladJ = ladJ_forward
 
     return tf.clip_by_value(y, left+1e-6, right-1e-6), ladJ #, [w,h,d]
+ '''

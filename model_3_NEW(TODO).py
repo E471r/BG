@@ -35,7 +35,7 @@ class MODEL_3_NEW(tf.keras.models.Model):
 
         " TODO "
 
-        # just stack layerts based on list_cond_masks
+        # just stack layers based on list_cond_masks
         # this part is much less cumbersome now, all is handled inside each layer.
         
 

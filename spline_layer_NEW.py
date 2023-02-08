@@ -139,9 +139,9 @@ def rqs_with_periodic_shift_(x,
     n_transforms = len(list_h)
     if list_s is None: list_s = [None]*n_transforms
     ladJsum = 0.0
-    inds_list = [i for i in range(n_transforms)]
-    if forward: pass
-    else: inds_list = tf.reverse(inds_list,axis=[0])
+    
+    if forward: inds_list = [i for i in range(n_transforms)]
+    else:       inds_list = [n_transforms-1-i for i in range(n_transforms)]
     
     for i in inds_list:
         x = shift_(x, list_shifts[i], forward=True, xy_range = xy_range)

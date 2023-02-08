@@ -194,8 +194,8 @@ list_cos_sin_ = [cos_sin_1_,cos_sin_2_,cos_sin_3_,cos_sin_4_,cos_sin_5_]
 def broadcasting_app_axis1_(x, n):
     # x ~ (m,n*d)
     m = x.shape[1] // n
-    inds_axis_1 = [tf.range(m)+i*m for i in tf.range(n)]
-    y = tf.stack([tf.gather(x,inds_axis_1[i],axis=1) for i in tf.range(n)])
+    inds_axis_1 = [tf.range(m)+i*m for i in range(n)]
+    y = tf.stack([tf.gather(x,inds_axis_1[i],axis=1) for i in range(n)])
     return y # ~ (n,m,d)
 
 class SPLINE_LAYER_NEW(tf.keras.layers.Layer):

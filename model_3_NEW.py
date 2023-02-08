@@ -8,10 +8,22 @@ from utils_nf import save_pickle_, load_pickle_
 
 ##
 
+def get_list_cond_masks_unsupervised_(dim_flow):
+    """ barcode
+    """
+    list_cond_masks = []
+    for i in range(dim_flow):
+        a = 2**i
+        x = np.array((([0]*a + [1]*a)*D)[:dim_flow])
+        if 1 in x: pass
+        else: break
+        list_cond_masks.append(x)
+    return list_cond_masks # plt.matshow(list_cond_masks) ; ref: i-flow paper.
+
 class MODEL_3_NEW(tf.keras.models.Model):
     def __init__(self,
                  periodic_mask, #~(dim_flow,)
-                 list_cond_masks, # non-random variable permutations [TODO: automate internally]
+                 list_cond_masks = None, # non-random variable permutations
                  # ^ length of this list determines number of layers.
                  # each element of the list is a mask s.t. len(mask) = len(periodic_mask)
 
@@ -48,7 +60,9 @@ class MODEL_3_NEW(tf.keras.models.Model):
 
         periodic_mask = np.array(periodic_mask).flatten()
         self.dim_flow = len(periodic_mask)
-        list_cond_masks = [np.array(x).flatten() for x in list_cond_masks]
+        if list_cond_masks is not None: list_cond_masks = [np.array(x).flatten() for x in list_cond_masks]
+        else: list_cond_masks = get_list_cond_masks_unsupervised_(self.dim_flow)
+        
         self.periodic_mask = periodic_mask
         self.list_cond_masks = list_cond_masks
         self.n_bins_periodic = n_bins_periodic

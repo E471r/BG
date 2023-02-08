@@ -14,11 +14,11 @@ def get_list_cond_masks_unsupervised_(dim_flow):
     list_cond_masks = []
     for i in range(dim_flow):
         a = 2**i
-        x = np.array((([0]*a + [1]*a)*D)[:dim_flow])
+        x = np.array((([0]*a + [1]*a)*dim_flow)[:dim_flow])
         if 1 in x: pass
         else: break
         list_cond_masks.append(x)
-    return list_cond_masks # plt.matshow(list_cond_masks) ; ref: i-flow paper.
+    return list_cond_masks # plt.matshow(list_cond_masks) # ref: i-flow paper.
 
 class MODEL_3_NEW(tf.keras.models.Model):
     def __init__(self,

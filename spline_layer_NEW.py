@@ -92,9 +92,6 @@ def rqs_(x,
     xy_min, xy_max = xy_range
     domain_width = xy_max - xy_min
     
-    if s is None: s = tf.ones([m,dim*(n_bins-1)])
-    else: pass
-    
     bin_positons_x = bin_positons_(w,
                                    dim = dim,
                                    n_bins = n_bins,
@@ -105,10 +102,9 @@ def rqs_(x,
                                    n_bins = n_bins,
                                    domain_width = domain_width,
                                    min_bin_width = min_knot_slope) # (m, dim, n_bins)
-    knot_slopes = knot_slopes_(s,
-                               dim = dim,
-                               n_bins = n_bins,
-                               min_knot_slope = min_knot_slope)
+    
+    if s is None: knot_slopes = tf.ones([m,dim,(n_bins-1)])
+    else: knot_slopes = knot_slopes_(s, dim = dim, n_bins = n_bins, min_knot_slope = min_knot_slope)
     
     RQS_obj = RQS_class(bin_widths = bin_positons_x,
                         bin_heights = bin_positons_y,

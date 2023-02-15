@@ -27,9 +27,9 @@ class MODEL_3_NEW(tf.keras.models.Model):
                  # ^ length of this list determines number of layers.
                  # each element of the list is a mask s.t. len(mask) = len(periodic_mask)
 
-                 n_bins_periodic = 10,           # in each layer (if relevant)
+                 n_bins_periodic = 5,           # in each layer (if relevant)
                  number_of_splines_periodic = 1, # in each layer (if relevant)
-                 n_bins_other = 10,              # in each layer (if relevant)
+                 n_bins_other = 5,              # in each layer (if relevant)
 
                  n_hidden = 1, # dim of hidden layers set same as output dim
                  hidden_activation = tf.nn.silu,

@@ -110,7 +110,7 @@ def rqs_(x,
                                    dim = dim,
                                    n_bins = n_bins,
                                    domain_width = domain_width,
-                                   min_bin_width = min_knot_slope) # (m, dim, n_bins)
+                                   min_bin_width = min_bin_width) # (m, dim, n_bins)
  
     RQS_obj = RQS_class(bin_widths = bin_positons_x,
                         bin_heights = bin_positons_y,

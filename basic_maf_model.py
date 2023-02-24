@@ -144,7 +144,6 @@ class MODEL_M(tf.keras.models.Model):
     """ simple MAF with splines
         for cartesian only (can't encode periodic because different in/out dim is not yet implemented inside tfb.AutoregressiveNetwork)
     """
-    # MODEL_M is better than coupled flow.
     # loss = - tf.reduce_mean(ladJ) - tf.reduce_mean(model_m.evaluate_log_prior_(y)) ; where ; y, ladJ = model_m.forward(xbatch)
     def __init__(self,
                  dim_flow,

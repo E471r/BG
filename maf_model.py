@@ -149,14 +149,14 @@ class MODEL_M(tf.keras.models.Model):
                  dim_flow,
                  orders = [None,None],
 
-                 n_bins = 10,
-                 min_bin_width = 0.02,
-                 min_knot_slope = 0.01,
+                 n_bins = 20,
+                 min_bin_width = 0.001,
+                 min_knot_slope = 0.001,
                  
                  dims_hidden = [100],
                  hidden_activation = tf.nn.relu,
 
-                 prior = 'flat', # or float (standard deviaion on [-1,1] interval.
+                 prior = 'gauss', # or float (standard deviaion on [-1,1] interval.
                  ):
         super(MODEL_M, self).__init__()
 
@@ -233,22 +233,22 @@ class MODEL_M(tf.keras.models.Model):
         h = self.MLPs_H[i](x) # (m,dim_flow,n_bins)
         s = self.MLPs_S[i](x) # (m,dim_flow,n_bins-1)
 
-        xi, ladj = rqs_(x = x,  # (m,dim_flow)
-                        w = w,  # (m,dim_flow,n_bins)
-                        h = h,  # (m,dim_flow,n_bins)
-                        s = s,  # (m,dim_flow,n_bins-1)
+        xi, ladj = rqs_(x = x[:,1:],  # (m,dim_flow)
+                        w = w[:,1:],  # (m,dim_flow,n_bins)
+                        h = h[:,1:],  # (m,dim_flow,n_bins)
+                        s = s[:,1:],  # (m,dim_flow,n_bins-1)
                         forward = True,
                         xy_range = self.flow_range,
                         min_bin_width = self.min_bin_width,
                         min_knot_slope = self.min_knot_slope,
                         whs_already_reshaped = True)
-        return xi, ladj # (m,dim_flow), (m,1)
+        return tf.concat([x[:,:1],xi],axis=1), ladj # (m,dim_flow), (m,1)
 
     def transform_inverse_(self, x, i):
         ladj = 0.0
-        output = []
+        output = [x[:,:1]]
 
-        for j in range(self.dim_flow):
+        for j in range(1,self.dim_flow):
             cond = tf.concat(output+[x[:,j:]],axis=1) # (m,dim)
             w = self.MLPs_W[i](cond)[:,j:j+1,:] # (m,1,n_bins)
             h = self.MLPs_H[i](cond)[:,j:j+1,:] # (m,1,n_bins)

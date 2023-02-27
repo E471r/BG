@@ -156,7 +156,7 @@ class MODEL_M(tf.keras.models.Model):
                  dims_hidden = [100],
                  hidden_activation = tf.nn.relu,
 
-                 prior = 'gauss', # or float (standard deviaion on [-1,1] interval.
+                 prior = 'gauss',
                  ):
         super(MODEL_M, self).__init__()
 

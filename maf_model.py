@@ -213,7 +213,7 @@ class MODEL_M(tf.keras.models.Model):
         # prior:
         if self.prior == 'flat':
             print('self.prior: flat')
-            self.log_prior_uniform = - self.dim_flow*np.log(2.0)
+            self.log_prior_uniform = - float(self.dim_flow*np.log(2.0))
             self.evaluate_log_prior_ = lambda x : self.log_prior_uniform
             self.sample_prior_ = lambda batch_size : tf.random.uniform(shape=[batch_size, self.dim_flow], minval=-1.0,  maxval=1.0)
         elif self.prior == 'gauss':

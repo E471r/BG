@@ -287,14 +287,17 @@ class MODEL_M(tf.keras.models.Model):
     ##
 
     def save_model(self, path_and_name : str):
-        save_pickle_([self.init_args, self.trainable_variables], path_and_name)
+        var = [x.numpy() for x in self.trainable_variables] 
+        # to numpy first ^ because "Can't pickle local object '_make_masked_constraint.<locals>.masked_constraint'"
+        save_pickle_([self.init_args, var], path_and_name)
         
     @staticmethod
     def load_model(path_and_name : str):
         init_args, ws = load_pickle_(path_and_name)
         loaded_model = (lambda f, args : f(*args))(MODEL_M, init_args)
+        var = [tf.Variable(x, dtype=tf.float32) for x in ws]
         for i in range(len(ws)):
-            loaded_model.trainable_variables[i].assign(ws[i])
+            loaded_model.trainable_variables[i].assign(var[i])
         return loaded_model
 
     def store_initial_parameters_(self):

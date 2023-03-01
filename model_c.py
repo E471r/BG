@@ -647,16 +647,16 @@ class MODEL_C(tf.keras.models.Model):
                  # ^ length of this list determines number of layers.
                  # each element of the list is a mask s.t. len(mask) = len(periodic_mask)
 
-                 n_bins_periodic = 10,           # in each layer (if relevant)
-                 number_of_splines_periodic = 1, # in each layer (if relevant)
+                 n_bins_periodic = 10,
+                 number_of_splines_periodic = 2, # 1 or 2
                  trainable_shifts = False,
-                 n_bins_other = 10,              # in each layer (if relevant)
+                 n_bins_other = 10,
 
-                 n_hidden = 1, # dim of hidden layers set same as output dim
+                 n_hidden = 1, # dim of hidden layers set same as output dim [TODO: choices]
                  hidden_activation = tf.nn.relu,
 
                  min_bin_width = 0.001,
-                 trainable_slopes = True,
+                 trainable_slopes = True, # True
                  min_knot_slope = 0.001,
 
                  dims_hidden = None,
@@ -665,7 +665,7 @@ class MODEL_C(tf.keras.models.Model):
 
                  verbose = True,
 
-                 prior = 'gauss'
+                 prior = 'gauss', # gauss
                  ):
         super(MODEL_C, self).__init__()
 

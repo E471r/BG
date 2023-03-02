@@ -123,7 +123,7 @@ def rqs_with_periodic_shift_(x,
                              min_bin_width = 0.025,
                              min_knot_slope = 0.1,
                             ):
-    n_transforms = len(list_h)
+    n_transforms = list_h.shape[0] #len(list_h)
     #
     if list_s is None or list_s[0].shape[-1] == 0: list_s = [None]*n_transforms
     else: pass

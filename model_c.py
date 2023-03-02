@@ -332,7 +332,7 @@ class SPLINE_LAYER(tf.keras.layers.Layer):
                                                 list_w = pAP[:,:,:n],                       # (m,dim*n_bins) * n_transforms
                                                 list_h = pAP[:,:,n:2*n],                    # (m,dim*n_bins) * n_transforms
                                                 list_shifts = None,  # (m,dim)
-                                                list_s = pAP[:,:,n:2*n:],
+                                                list_s = pAP[:,:,2*n:],
                                                 forward = forward,
                                                 xy_range = self.flow_range,
                                                 min_bin_width = self.min_bin_width,
